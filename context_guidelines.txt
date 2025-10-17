@@ -1,0 +1,41 @@
+MEDICAL AUTHORIZATION LETTER GUIDELINES
+
+REQUIREMENTS:
+- Professional medical language
+- Clear articulation of medical necessity
+- Specific clinical justification
+- Conservative treatment failure documentation
+- Objective findings and functional impairment
+
+PAYER RULES:
+- United Healthcare: Requires 6+ weeks conservative treatment, objective findings, functional impairment documentation
+- Aetna: Emphasizes clinical guidelines compliance, detailed imaging justification
+- Cigna: Focus on medical necessity criteria, prior authorization history
+- Blue Cross Blue Shield: State-specific requirements, detailed clinical documentation
+
+CLINICAL GUIDELINES:
+- Reference appropriate medical specialty guidelines
+- Include evidence-based treatment protocols
+- Document failed conservative measures
+- Specify functional limitations and work impact
+- Include relevant imaging findings and clinical correlation
+
+DOCUMENTATION STANDARDS:
+- Complete patient demographics
+- Accurate diagnosis codes (ICD-10)
+- Proper procedure codes (CPT)
+- Detailed treatment history
+- Objective clinical findings
+- Functional assessment
+- Work status impact
+- Conservative treatment failure documentation
+
+APPEAL SPECIFIC REQUIREMENTS:
+- Address specific denial reasons
+- Provide additional clinical evidence
+- Reference payer policy compliance
+- Include updated documentation
+- Emphasize medical necessity
+- Highlight functional impairment
+- Document conservative treatment failure
+- Include specialist recommendations if applicable

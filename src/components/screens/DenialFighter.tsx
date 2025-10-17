@@ -274,11 +274,153 @@ export function DenialFighter() {
   };
 
   const handleCopyLetter = () => {
-    alert("Appeal letter copied to clipboard");
+    if (!selectedCase) return;
+    
+    // Generate the appeal letter text
+    const appealLetterText = generateAppealLetterText();
+    
+    // Copy to clipboard
+    navigator.clipboard.writeText(appealLetterText).then(() => {
+      showNotification("Copied to clipboard");
+    }).catch(() => {
+      // Fallback for older browsers
+      const textArea = document.createElement("textarea");
+      textArea.value = appealLetterText;
+      document.body.appendChild(textArea);
+      textArea.select();
+      document.execCommand("copy");
+      document.body.removeChild(textArea);
+      showNotification("Copied to clipboard");
+    });
+  };
+
+  const showNotification = (message: string) => {
+    // Create notification element
+    const notification = document.createElement("div");
+    notification.className = "fixed top-4 right-4 bg-green-600 text-white px-4 py-2 rounded-md shadow-lg z-50 transition-all duration-300";
+    notification.textContent = message;
+    
+    // Add to DOM
+    document.body.appendChild(notification);
+    
+    // Remove after 3 seconds
+    setTimeout(() => {
+      notification.style.opacity = "0";
+      notification.style.transform = "translateX(100%)";
+      setTimeout(() => {
+        if (document.body.contains(notification)) {
+          document.body.removeChild(notification);
+        }
+      }, 300);
+    }, 3000);
   };
 
   const handleDownloadPDF = () => {
-    alert("Downloading PDF...");
+    if (!selectedCase) return;
+    
+    // Generate the appeal letter text
+    const appealLetterText = generateAppealLetterText();
+    
+    // Create a new window for printing
+    const printWindow = window.open('', '_blank');
+    if (printWindow) {
+      printWindow.document.write(`
+        <html>
+          <head>
+            <title>Appeal Letter - ${selectedCase.patient}</title>
+            <style>
+              body { font-family: Arial, sans-serif; line-height: 1.6; margin: 40px; }
+              .header { margin-bottom: 30px; }
+              .content { margin-bottom: 20px; }
+              .footer { margin-top: 30px; }
+              @media print { body { margin: 20px; } }
+            </style>
+          </head>
+          <body>
+            <div class="header">
+              <p><strong>To: ${selectedCase.insurance} Appeals Department</strong></p>
+              <p>Re: Appeal for Prior Authorization Denial</p>
+              <p>Case ID: ${selectedCase.id}</p>
+              <p>Patient: ${selectedCase.patient}</p>
+              <p>Date: ${new Date().toLocaleDateString()}</p>
+            </div>
+            
+            <div class="content">
+              ${appealLetterText.replace(/\n/g, '<br>')}
+            </div>
+            
+            <div class="footer">
+              <p>Sincerely,</p>
+              <p><strong>Dr. [Physician Name]</strong></p>
+            </div>
+          </body>
+        </html>
+      `);
+      printWindow.document.close();
+      printWindow.focus();
+      printWindow.print();
+    }
+  };
+
+  const generateAppealLetterText = () => {
+    if (!selectedCase) return "";
+    
+    let letterText = `Dear Appeals Review Team,
+
+I am writing to appeal the denial of prior authorization for ${selectedCase.procedure} for my patient, ${selectedCase.patient}. 
+The initial request was denied on ${selectedCase.denialDate} with the stated reason: "${selectedCase.denialReason}."
+
+This appeal provides additional clinical documentation and evidence that demonstrates the medical necessity 
+of this procedure for this patient's specific condition.
+
+Clinical Justification:
+The patient has undergone extensive conservative treatment as outlined in the attached documentation. 
+Physical therapy notes spanning 8 weeks show progressive treatment without adequate improvement. 
+Pain scale documentation demonstrates ongoing functional impairment affecting daily activities.`;
+
+    // Add completed checklist items
+    const completedItems = checklistItems.filter(item => item.completed);
+    if (completedItems.length > 0) {
+      letterText += `\n\nSupporting Documentation Provided:`;
+      completedItems.forEach(item => {
+        letterText += `\n• ${item.label}`;
+        if (item.notes) {
+          letterText += `\n  ${item.notes}`;
+        }
+      });
+    }
+
+    // Add additional comments
+    if (additionalComments) {
+      letterText += `\n\nAdditional Clinical Context:\n${additionalComments}`;
+    }
+
+    letterText += `\n\nMedical Necessity:
+Based on current clinical guidelines and the patient's documented treatment history, 
+this imaging study is medically necessary to properly diagnose and develop an appropriate treatment plan. 
+Delay in obtaining this study may result in prolonged disability and increased healthcare costs.`;
+
+    // Add attached documents
+    const allFiles = [
+      ...completedItems.flatMap(item => item.files),
+      ...additionalFiles
+    ];
+    
+    if (allFiles.length > 0) {
+      letterText += `\n\nAttached Documents:`;
+      allFiles.forEach(file => {
+        letterText += `\n• ${file.name}`;
+      });
+    }
+
+    letterText += `\n\nI respectfully request that you review the attached comprehensive documentation and reconsider 
+the denial of this medically necessary procedure. Should you require any additional information, 
+please do not hesitate to contact me directly.
+
+Sincerely,
+Dr. [Physician Name]`;
+
+    return letterText;
   };
 
   const handleRegenerateLetter = () => {
