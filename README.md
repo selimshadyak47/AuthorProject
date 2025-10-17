@@ -1,3 +1,9 @@
+TO RUN: 
+
+1)  npm install
+2)  npm run dev
+ 
+ 
  AuthOr — AI-Powered Prior Authorization Assistant
 
  Team Members
