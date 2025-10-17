@@ -62,5 +62,5 @@ The repository includes all code and assets for a production-ready implementatio
 
 ---
 
-### 🏁 **Summary**
+summary
 AuthOr uses AI to eliminate repetitive healthcare bureaucracy. By combining real-world clinical data, policy retrieval, and natural-language generation, AuthOr allows physicians to spend less time fighting insurance and more time caring for patients.
